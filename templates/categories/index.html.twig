@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategoriesController!{% endblock %}
+
+{% block body %}
+    <h1>Liste des catégories</h1>
+    <div class="border p-2 bg-light mt-4 mb-4">
+        <ul>
+            {% for categorie in categories %}
+                <li><a href="{{ path('app_categories') }}"></a><h2>{{ categorie.titre }}</h2></li>
+
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
