@@ -45,10 +45,15 @@ class ArticleController extends AbstractController
     {
 
         $articles = $this->articleRepository->findOneBy(["slug"=>$slug]);
+        $categorie = $articles->getCategorie()->getTitre();
 
         return $this->render('article/article.html.twig',[
-            "articles" => $articles
+            "articles" => $articles,
+            "categorie" => $categorie
         ]);
 
     }
+
+
+
 }
