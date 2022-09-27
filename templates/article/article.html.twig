@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ articles.titre }}{% endblock %}
+
+{% block body %}
+    <ul class="p-2">
+        <div class="border p-2 bg-light mt-4 mb-4"><h2>{{ articles.titre }}</h2>
+            <p class="font-italic mb-5">Article écrit le {{ articles.createdat | date("d/m/Y") }}</p>
+            <p>{{ articles.contenu }}</p>
+        </div>
+    </ul>
+
+
+{% endblock %}

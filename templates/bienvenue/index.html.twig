@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{# {% block title %}Bienvenue{% endblock %} #}
+
+{% block body %}
+<h1>Bienvenue dans le cours Symfony !</h1>
+    <ul>
+        <li><a href="{{ path('app_bienvenue_personne', {'nom': 'Caillou'}) }}">Caillou</a></li>
+        <li><a href="{{ path('app_bienvenue_personne', {'nom': 'Short'}) }}">Short</a></li>
+        <li><a href="{{ path('app_bienvenue_personne', {'nom': 'Paul'}) }}">Paul</a></li>
+    </ul>
+{% endblock %}
