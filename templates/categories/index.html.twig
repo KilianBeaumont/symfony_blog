@@ -3,13 +3,16 @@
 {% block title %}Hello CategoriesController!{% endblock %}
 
 {% block body %}
-    <h1>Liste des catégories</h1>
-    <div class="border p-2 bg-light mt-4 mb-4">
-        <ul>
-            {% for categorie in categories %}
-                <li><a href="{{ path('app_categories') }}"></a><h2>{{ categorie.titre }}</h2></li>
+    <h1 class="pt-3 mb-5">Liste des catégories</h1>
+    {% for categorie in categories | sort %}
 
-            {% endfor %}
-        </ul>
+    <div class="row">
+        <div class="col d-flex justify-content-start mb-2">
+            <h1>{{ categorie.titre }} ( {{ categorie.articles | length }} articles )</h1>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <a class="btn btn-success " href="{{ path('app_categorie_slug', {'slug': categorie.slug}) }}">voir</a>
+        </div>
     </div>
+    {% endfor %}
 {% endblock %}

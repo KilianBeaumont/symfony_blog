@@ -18,10 +18,21 @@ class CategoriesController extends AbstractController
     public function getCategories(): Response
     {
 
-        $categories = $this->categorieRepository->findBy([]);
+        $categories = $this->categorieRepository->findBy([],['titre'=>'ASC']);
 
 
         return $this->render('categories/index.html.twig', [
+            "categories" => $categories
+        ]);
+    }
+
+    #[Route('/categories/{slug}', name: 'app_categorie_slug')]
+    public function getCategorie($slug): Response
+    {
+
+        $categories = $this->categorieRepository->findOneBy(["slug"=>$slug]);
+
+        return $this->render('categories/categorie.html.twig', [
             "categories" => $categories
         ]);
     }

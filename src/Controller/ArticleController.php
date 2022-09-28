@@ -39,17 +39,17 @@ class ArticleController extends AbstractController
 
     }
 
-    #[Route('/articles/{slug}', name: 'app_article_slug')]
+    #[Route('/article/{slug}', name: 'app_article_slug')]
 
     public function getArticle($slug): Response
     {
 
         $articles = $this->articleRepository->findOneBy(["slug"=>$slug]);
-        $categorie = $articles->getCategorie()->getTitre();
+
 
         return $this->render('article/article.html.twig',[
-            "articles" => $articles,
-            "categorie" => $categorie
+            "article" => $articles
+
         ]);
 
     }

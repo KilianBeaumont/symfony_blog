@@ -15,6 +15,20 @@ class Categorie {
 -titre : string
 }
 
-Article  "0..* " ---  "0..1 " Categorie
+class Commentaire {
+-id : int
+-contenu : string
+-createdAt : datetime
+}
 
+class Utilisateur {
+-id : int
+-prenom : string
+-nom : string
+-pseudo : string
+}
+
+Article  "0..*  " ---  "0..1 " Categorie
+Commentaire  "0..* " -- "0..1 " Utilisateur
+Article "1..1 " --- "0..*  " Commentaire
 @enduml

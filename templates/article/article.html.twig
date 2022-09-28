@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ articles.titre }}{% endblock %}
+{% block title %}{{ article.titre }}{% endblock %}
 
 {% block body %}
+
     <ul class="p-2">
-        <div class="border p-2 bg-light mt-4 mb-4"><h2>{{ articles.titre }}</h2>
-            <p class="font-italic mb-5">Article écrit le {{ articles.createdat | date("d/m/Y") }}</p>
-            <h4><span class="badge bg-secondary">{{ categorie }}</span></h4>
-            <p>{{ articles.contenu }}</p>
+        <div class="border p-2 bg-light mt-4 mb-4"><h2>{{ article.titre }}</h2>
+            <p class="font-italic mb-5">Article écrit le {{ article.createdat | date("d/m/Y") }}</p>
+            <h4><a href="{{ path('app_categorie_slug', {'slug': article.categorie.slug}) }}" class="badge bg-secondary">
+                    {{ article.categorie.titre }}
+                </a>
+            </h4>
+            <p>{{ article.contenu }}</p>
         </div>
     </ul>
 
