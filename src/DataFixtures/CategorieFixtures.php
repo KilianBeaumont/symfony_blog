@@ -30,10 +30,7 @@ class CategorieFixtures extends Fixture
 
             $manager->persist($categorie);
 
-
         }
-
-
         $manager->flush();
     }
 }

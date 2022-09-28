@@ -12,6 +12,16 @@
                 </a>
             </h4>
             <p>{{ article.contenu }}</p>
+            <hr>
+            <div class="group-list border p-2 bg-light mt-4 mb-4 ">
+                <p>Voir les {{ article.commentaires | length }} commentaires</p>
+                {% for commentaire in article.commentaires %}
+                    <h5>Auteur : {{ commentaire.utilisateur.pseudo }}</h5>
+                    <p>{{ commentaire.contenu }}</p>
+                    <p>Posté le {{ commentaire.createdAt | date("d/m/Y") }}</p>
+                 <hr>
+                {% endfor %}
+            </div>
         </div>
     </ul>
 
