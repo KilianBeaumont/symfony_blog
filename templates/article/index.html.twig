@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Liste des articles</h1>
+    <a class="btn btn-success mb-3 mt-3" href="{{ path("app_articles_nouveau") }}">Créer un article</a>
     <div class="border p-2 bg-light mt-4 mb-4">
         <ul>
             {% for article in articles %}
@@ -13,6 +14,9 @@
 
             {% endfor %}
         </ul>
+    </div>
+    <div class="navigation d-flex justify-content-center">
+        {{ knp_pagination_render(articles) }}
     </div>
 
 {% endblock %}
