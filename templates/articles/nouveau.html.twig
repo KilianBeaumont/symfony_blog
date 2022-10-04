@@ -8,11 +8,33 @@
 
     {{ form_start(formArticle) }} {# <form> #}
 
-    {{ form_row(formArticle.titre) }} {# champ titre #}
+     {{ form_row(formArticle.titre, {
+        'label' : 'Titre article',
+        'attr' : {
+            'placeholder' : "Veuillez saisir le titre de l'article"
+        },
+        'help' : "Le titre doit contenir au moins 5 caractères"
+    }) }} {# champ titre #}
+
+   {#  {{ form_label(formArticle.titre, "Titre article",{
+        'label_attr' : {
+            'class' : 'text-warning'
+        }
+    }) }}
+
+    {{ form_widget(formArticle.titre, {
+        'attr' : {
+            'placeholder' : "Veuillez saisir le titre de l'article"
+    },
+    })}}
+
+    {{ form_help(formArticle.titre, {'help' : "Le titre doit contenir au moins 5 caractères"}) }}#}
+
     {{ form_row(formArticle.contenu) }} {# champ contenu #}
 
+    {{ form_row(formArticle.categorie) }}
     <input type="submit" class="btn btn-success" value="Ajouter">
-
     {{ form_end(formArticle) }} {# </form> #}
+
 
 {% endblock %}

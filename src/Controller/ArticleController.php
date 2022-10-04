@@ -43,32 +43,38 @@ class ArticleController extends AbstractController
             10 /*limit per page*/
         );
 
-
         return $this->render('article/index.html.twig',[
             "articles" => $articles
         ]);
-
     }
 
     #[Route('/articles/{slug}', name: 'app_article_slug')]
     public function getArticle($slug): Response
     {
-
         $articles = $this->articleRepository->findOneBy(["slug"=>$slug]);
-
 
         return $this->render('article/article.html.twig',[
             "article" => $articles
-
         ]);
-
     }
 
-    #[Route('/articles/nouveau', name: 'app_articles_nouveau',priority: 1)]
-    public function insert(SluggerInterface $slugger) : Response {
+    #[Route('/articles/nouveau', name: 'app_articles_nouveau',methods: ['GET','POST'], priority: 1)]
+    public function insert(SluggerInterface $slugger, Request $request) : Response {
         $article = new Article();
         // Création du formulaire
         $formArticle = $this->createForm(ArticleType::class, $article);
+
+        // Reconnaitre si le formulaire a été soumis ou non
+        $formArticle->handleRequest($request);
+        // Est-ce que le formulaire a été soumis
+        if ($formArticle->isSubmitted() && $formArticle->isValid()) {
+            $article->setSlug($slugger->slug($article->getTitre())->lower())
+                ->setCreatedat(new \DateTime());
+            // Insérer l'article dans la bdd
+            $this->articleRepository->add($article, true);
+            return $this->redirectToRoute("app_articles");
+        }
+
         // Appel de la vue twig permettant d'afficher le formulaire
         return $this->renderForm('articles/nouveau.html.twig', [
             "formArticle"=>$formArticle
