@@ -21,7 +21,13 @@
             <div class="group-list border p-2 bg-light mt-4 mb-4 ">
                 <p>Voir les {{ article.commentaires | length }} commentaires</p>
                 {% for commentaire in article.commentaires %}
-                    <h5>Auteur : {{ commentaire.utilisateur.pseudo }}</h5>
+                    <p>
+                        {% if commentaire.utilisateur is not empty %}
+                            {{ commentaire.utilisateur.pseudo }}
+                        {% else %}
+                            Anonyme
+                        {% endif %}
+                    </p>
                     <p>{{ commentaire.contenu }}</p>
                     <p>Posté le {{ commentaire.createdAt | date("d/m/Y") }}</p>
                  <hr>
@@ -29,6 +35,4 @@
             </div>
         </div>
     </ul>
-
-
 {% endblock %}
