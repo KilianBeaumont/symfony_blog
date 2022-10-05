@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h1 class="mb-3">Création d'un article</h1>
+<h1 class="mb-3 mt-5">Création d'un article</h1>
 
     {{ form_start(formArticle) }} {# <form> #}
 
@@ -33,6 +33,9 @@
     {{ form_row(formArticle.contenu) }} {# champ contenu #}
 
     {{ form_row(formArticle.categorie) }}
+    {{ form_row(formArticle.publie, {
+        'label' : "Publier l'article ?"
+    }) }}
     <input type="submit" class="btn btn-success" value="Ajouter">
     {{ form_end(formArticle) }} {# </form> #}
 

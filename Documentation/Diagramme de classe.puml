@@ -8,6 +8,7 @@ class Article {
 -contenu : string
 -createdAt : datetime
 -slug : string
+-publie : bool
 }
 
 class Categorie {

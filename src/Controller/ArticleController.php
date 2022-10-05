@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Commentaire;
 use App\Form\ArticleType;
+use App\Form\CommentaireType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -17,11 +20,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ArticleController extends AbstractController
 {
     private ArticleRepository $articleRepository;
+    private CommentaireRepository $commentaireRepository;
 
     // Demander à Symfony d'infecter une instance de ArticleRepository
     // à la création du contrôleur
-    public function __construct(ArticleRepository $articleRepository){
+    public function __construct(ArticleRepository $articleRepository, CommentaireRepository $commentaireRepository){
         $this->articleRepository = $articleRepository;
+        $this->commentaireRepository = $commentaireRepository;
     }
 
     #[Route('/articles', name: 'app_articles')]
@@ -38,7 +43,7 @@ class ArticleController extends AbstractController
 
         // Mise en place de la pagination
         $articles = $paginator->paginate(
-            $this->articleRepository->findBy([],['createdat'=>'DESC']), /* query NOT result */
+            $this->articleRepository->findBy(['publie'=>'true'],['createdat'=>'DESC']), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
@@ -80,7 +85,6 @@ class ArticleController extends AbstractController
             "formArticle"=>$formArticle
         ]);
 
-
         /*$article->setTitre('Nouvel article 2')
             ->setContenu("Contenu du nouvel article 2")
             ->setSlug($slugger->slug($article->getTitre())->lower())
@@ -92,6 +96,24 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute("app_articles");*/
     }
 
+    #[Route('/articles/commentaire/{slug}', name: 'app_articles_commentaire',methods: ['GET','POST'], priority: 2)]
+    public function addCommentaire($slug, Request $request) : Response {
+        $commentaire = new Commentaire();
+       $article = $this->articleRepository->findOneBy(["slug"=>$slug]);
+       $formCommentaire = $this->createForm(CommentaireType::class,$commentaire);
 
+       $formCommentaire->handleRequest($request);
 
-}
+        if ($formCommentaire->isSubmitted() && $formCommentaire->isValid()) {
+            $commentaire->setCreatedat(new \DateTime())
+                        ->setArticle($article);
+            $this->commentaireRepository->add($commentaire, true);
+            return $this->redirectToRoute("app_articles");
+        }
+
+        // Appel de la vue twig permettant d'afficher le formulaire
+        return $this->renderForm('article/commentaire.html.twig', [
+            "formCommentaire"=>$formCommentaire
+        ]);
+
+}}

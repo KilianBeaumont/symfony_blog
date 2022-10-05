@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+    <h1>Nouveau commentaire</h1>
+
+    {{ form_start(formCommentaire) }}
+
+
+    {{ form_row(formCommentaire.utilisateur) }}
+    {{ form_row(formCommentaire.contenu) }}
+
+
+    {{ form_end(formCommentaire) }}
+{% endblock %}

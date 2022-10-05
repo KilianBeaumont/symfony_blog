@@ -8,14 +8,15 @@
         <div class="border p-2 bg-light mt-4 mb-4"><h2>{{ article.titre }}</h2>
             <p class="font-italic mb-5">Article écrit le {{ article.createdat | date("d/m/Y") }}</p>
             {% if article.categorie is not null %}
-                <p>{{ article.categorie.titre }}</p>
+                <h4>
+                    <a href="{{ path('app_categorie_slug', {'slug': article.categorie.slug}) }}" class="badge bg-secondary">
+                        {{ article.categorie.titre }}
+                    </a>
+                </h4>
             {% else %}
                 <p>Aucune Catégorie</p>
             {% endif %}
-            <h4><a href="{{ path('app_categorie_slug', {'slug': article.categorie.slug}) }}" class="badge bg-secondary">
-                    {{ article.categorie.titre }}
-                </a>
-            </h4>
+
             <p>{{ article.contenu }}</p>
             <hr>
             <div class="group-list border p-2 bg-light mt-4 mb-4 ">
@@ -34,5 +35,7 @@
                 {% endfor %}
             </div>
         </div>
+        <a class="btn btn-success" href="{{ path('app_articles_commentaire', {'slug': article.slug}) }}">Ajouter un commentaire</a>
     </ul>
+
 {% endblock %}
