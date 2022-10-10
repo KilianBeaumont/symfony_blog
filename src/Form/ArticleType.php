@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Categorie;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +21,11 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('titre', TextType::class )
-            ->add('contenu', TextareaType::class)
+            ->add('contenu', CKEditorType::class,[
+                'config' => [
+                    'uiColor' => ''
+                ]
+            ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'titre',
