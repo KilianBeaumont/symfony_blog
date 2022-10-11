@@ -54,12 +54,25 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/articles/{slug}', name: 'app_article_slug')]
-    public function getArticle($slug): Response
+    public function getArticle($slug, Request $request): Response
     {
+        $commentaire = new Commentaire();
+        $article = $this->articleRepository->findOneBy(["slug"=>$slug]);
+        $formCommentaire = $this->createForm(CommentaireType::class,$commentaire);
+
+        $formCommentaire->handleRequest($request);
+
+        if ($formCommentaire->isSubmitted() && $formCommentaire->isValid()) {
+            $commentaire->setCreatedat(new \DateTime())
+                ->setArticle($article);
+            $this->commentaireRepository->add($commentaire, true);
+            return $this->redirectToRoute("app_articles");
+        }
         $articles = $this->articleRepository->findOneBy(["slug"=>$slug]);
 
-        return $this->render('article/article.html.twig',[
-            "article" => $articles
+        return $this->renderForm('article/article.html.twig',[
+            "article" => $articles,
+            "formCommentaire" => $formCommentaire
         ]);
     }
 
@@ -96,24 +109,28 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute("app_articles");*/
     }
 
-    #[Route('/articles/commentaire/{slug}', name: 'app_articles_commentaire',methods: ['GET','POST'], priority: 2)]
-    public function addCommentaire($slug, Request $request) : Response {
-        $commentaire = new Commentaire();
-       $article = $this->articleRepository->findOneBy(["slug"=>$slug]);
-       $formCommentaire = $this->createForm(CommentaireType::class,$commentaire);
+    #[Route('/articles/{slug}/modifier', name: 'app_articles_modifier',methods: ['GET','POST'], priority: 1)]
+    public function modifier(SluggerInterface $slugger, Request $request, $slug) : Response {
 
-       $formCommentaire->handleRequest($request);
+        $article = $this->articleRepository->findOneBy(["slug"=>$slug]);
+        $formArticle = $this->createForm(ArticleType::class, $article);
 
-        if ($formCommentaire->isSubmitted() && $formCommentaire->isValid()) {
-            $commentaire->setCreatedat(new \DateTime())
-                        ->setArticle($article);
-            $this->commentaireRepository->add($commentaire, true);
+        // Reconnaitre si le formulaire a été soumis ou non
+        $formArticle->handleRequest($request);
+        // Est-ce que le formulaire a été soumis
+        if ($formArticle->isSubmitted() && $formArticle->isValid()) {
+            $article->setSlug($slugger->slug($article->getTitre())->lower())
+                ->setCreatedat(new \DateTime());
+            // Insérer l'article dans la bdd
+            $this->articleRepository->add($article, true);
             return $this->redirectToRoute("app_articles");
         }
 
         // Appel de la vue twig permettant d'afficher le formulaire
-        return $this->renderForm('article/commentaire.html.twig', [
-            "formCommentaire"=>$formCommentaire
+        return $this->renderForm('articles/modifier.html.twig', [
+            "formArticle"=>$formArticle
         ]);
+
+
 
 }}

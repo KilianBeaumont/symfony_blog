@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'article{% endblock %}
+
+{% block body %}
+
+    <h1 class="mb-3 mt-5">Modification de l'article</h1>
+
+    {{ form_start(formArticle) }} {# <form> #}
+
+    {{ form_row(formArticle.titre, {
+        'label' : 'Titre article',
+        'attr' : {
+            'placeholder' : "Veuillez saisir le titre de l'article"
+        },
+        'help' : "Le titre doit contenir au moins 5 caractères"
+    }) }} {# champ titre #}
+
+    {#  {{ form_label(formArticle.titre, "Titre article",{
+        'label_attr' : {
+            'class' : 'text-warning'
+        }
+    }) }}
+
+    {{ form_widget(formArticle.titre, {
+        'attr' : {
+            'placeholder' : "Veuillez saisir le titre de l'article"
+    },
+    })}}
+
+    {{ form_help(formArticle.titre, {'help' : "Le titre doit contenir au moins 5 caractères"}) }}#}
+
+    {{ form_row(formArticle.contenu) }} {# champ contenu #}
+
+    {{ form_row(formArticle.categorie) }}
+    {{ form_row(formArticle.publie, {
+        'label' : "Publier l'article ?"
+    }) }}
+    <input type="submit" class="btn btn-success" value="Appliquer les modifications">
+    {{ form_end(formArticle) }} {# </form> #}
+
+
+{% endblock %}
